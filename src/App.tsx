@@ -3,6 +3,13 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/home";
 import Product from "./pages/product";
 
+import SmartphonePremium from "./assets/images/xiaomi-15-ultra-test-2-scaled.webp"
+import LaptopUltrabook from "./assets/images/windowsultrabooks-2048px-3640.webp"
+import WirelessHeaphones from "./assets/images/bluetoothheadphones-2048px-6146.webp"
+import SmartWatch from "./assets/images/FkGweMeB7hdPgaSFQdgsfj-1200-80.jpg"
+import DigitalCamera from "./assets/images/retro-pink-compact-digital-camera-digicam-1.webp"
+import GamingConsole from "./assets/images/gamingconsoles-2048px-00651-3x2-1.webp"
+
 interface ProductProps {
   id: number;
   title: string;
@@ -15,37 +22,37 @@ const App = () => {
     {
       id: 1,
       title: "Smartphone Premium",
-      image: "https://images.frandroid.com/wp-content/uploads/2025/02/xiaomi-15-ultra-test-2-scaled.jpg",
+      image: SmartphonePremium,
       isLiked: false,
     },
     {
       id: 2,
       title: "Laptop Ultrabook",
-      image: "https://cdn.thewirecutter.com/wp-content/media/2024/07/windowsultrabooks-2048px-3640.jpg?auto=webp&quality=75&width=1024",
+      image: LaptopUltrabook,
       isLiked: true,
     },
     {
       id: 3,
       title: "Wireless Headphones",
-      image: "https://cdn.thewirecutter.com/wp-content/media/2023/07/bluetoothheadphones-2048px-6146.jpg?auto=webp&quality=75&width=1024",
+      image: WirelessHeaphones,
       isLiked: false,
     },
     {
       id: 4,
       title: "Smart Watch",
-      image: "https://cdn.mos.cms.futurecdn.net/FkGweMeB7hdPgaSFQdgsfj-1200-80.jpg",
+      image: SmartWatch,
       isLiked: false,
     },
     {
       id: 5,
       title: "Digital Camera",
-      image: "https://filmcamerastore.co.uk/cdn/shop/files/retro-pink-compact-digital-camera-digicam-1.png?v=1689277087&width=1406",
+      image: DigitalCamera,
       isLiked: true,
     },
     {
       id: 6,
       title: "Gaming Console",
-      image: "https://cdn.thewirecutter.com/wp-content/media/2023/11/gamingconsoles-2048px-00651-3x2-1.jpg?auto=webp&quality=75&crop=4:3,smart&width=1024",
+      image: GamingConsole,
       isLiked: false,
     }
   ]);
