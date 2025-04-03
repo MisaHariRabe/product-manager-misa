@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart as faHeartOutline } from "@fortawesome/free-regular-svg-icons";
-import { faHeart as faHeartFill, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as faHeartOutline, faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as faHeartFill } from "@fortawesome/free-solid-svg-icons";
 
 interface ProductProps {
     id: number;
@@ -28,25 +28,25 @@ export const ProductCard = (
                 />
             </figure>
             <div className="flex flex-col justify-between">
-                <h2 className="text-lg font-semibold text-gray-800">{product.title}</h2>
+                <h2 className="text-xl font-semibold text-gray-800">{product.title}</h2>
                 <div className="flex items-center justify-between mt-4">
-                    <div className="flex items-center">
+                    <div className="flex items-center gap-4">
                         <FontAwesomeIcon
-                            color="green"
+                            color="lightgreen"
                             icon={isLiked ? faHeartFill : faHeartOutline}
                             onClick={() => handleLike(product.id)}
-                            className="text-2xl hover:cursor-pointer hover:scale-110 transition-transform duration-200"
+                            className="md:text-2xl text-3xl hover:cursor-pointer hover:scale-110 transition-transform duration-200"
                         />
                         <FontAwesomeIcon
                             color="red"
-                            icon={faTrash}
+                            icon={faTrashCan}
                             onClick={() => handleDelete(product.id)}
-                            className="text-2xl px-4 py-2 hover:cursor-pointer hover:scale-110 transition-transform duration-200"
+                            className="md:text-2xl text-3xl px-4 py-2 hover:cursor-pointer hover:scale-110 transition-transform duration-200"
                         />
                     </div>
                     <Link
                         to={"/product/" + product.id}
-                        className="block text-blue-500 hover:underline hover:text-blue-700 transition-colors duration-200"
+                        className="block text-blue-500 hover:text-blue-700 transition-colors duration-200 p-2 border border-blue-500 rounded"
                     >
                         View Details
                     </Link>

@@ -46,12 +46,14 @@ const App = () => {
   };
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home products={products} handleDelete={handleDelete} handleLike={handleLike} handleAdd={handleAdd} />} />
-        <Route path="/product/:id" element={<Product products={products} handleDelete={handleDelete} handleLike={handleLike} />} />
-      </Routes>
-    </Router>
+    <div className="p-4 bg-gray-50 min-h-[100vh]">
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home products={products} handleDelete={handleDelete} handleLike={handleLike} handleAdd={handleAdd} />} />
+          <Route path="/product/:id" element={<Product products={products} handleDelete={handleDelete} handleLike={handleLike} />} />
+        </Routes>
+      </Router>
+    </div>
   );
 };
 

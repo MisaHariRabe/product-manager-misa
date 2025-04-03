@@ -29,8 +29,8 @@ const Home = ({ products, handleDelete, handleLike, handleAdd }: { products: Pro
     };
 
     return (
-        <div className="p-4 bg-gray-50 min-h-screen">
-            <h1 className="text-3xl font-extrabold text-gray-800 mb-5">Home</h1>
+        <>
+            <h1 className="md:text-3xl text-5xl font-extrabold text-gray-800 mb-5">Home</h1>
             {isFormVisible && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black z-50">
                     <form
@@ -84,7 +84,7 @@ const Home = ({ products, handleDelete, handleLike, handleAdd }: { products: Pro
                     </form>
                 </div>
             )}
-            <div className="grid grid-flow-col gap-4">
+            <div className="grid md:grid-flow-col grid-flow-row justify-center gap-4">
                 {products.length > 0
                     ? (products.map(
                         product => (
@@ -106,7 +106,7 @@ const Home = ({ products, handleDelete, handleLike, handleAdd }: { products: Pro
             >
                 <FontAwesomeIcon fill="white" className="text-2xl" icon={faPlus} />
             </button>
-        </div>
+        </>
     );
 };
 
