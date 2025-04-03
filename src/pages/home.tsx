@@ -1,7 +1,7 @@
 import { ProductCard } from "../components/ProductCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 interface ProductProps {
@@ -14,6 +14,12 @@ interface ProductProps {
 const Home = ({ products, handleDelete, handleLike, handleAdd }: { products: ProductProps[], handleDelete: (id: number) => void, handleLike: (id: number) => void, handleAdd: (product: Omit<ProductProps, 'id' | 'isLiked'>) => void }) => {
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [formData, setFormData] = useState({ title: "", image: "" });
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setIsLoading(false), 1000);
+        return () => clearTimeout(timer);
+    }, []);
 
     const toggleForm = () => setIsFormVisible(!isFormVisible);
 
@@ -28,6 +34,18 @@ const Home = ({ products, handleDelete, handleLike, handleAdd }: { products: Pro
         setFormData({ title: "", image: "" });
         setIsFormVisible(false);
     };
+
+    if (products.length === 0) {
+        return (
+            <div className="p-4">
+                <div className="animate-pulse space-y-4">
+                    <div className="h-6 bg-gray-300 rounded"></div>
+                    <div className="h-6 bg-gray-300 rounded"></div>
+                    <div className="h-6 bg-gray-300 rounded"></div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <>
@@ -100,27 +118,35 @@ const Home = ({ products, handleDelete, handleLike, handleAdd }: { products: Pro
                     visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.1 } }
                 }}
             >
-                {products.length > 0
-                    ? (products.map(
-                        product => (
-                            <motion.div
-                                key={product.id}
-                                variants={{
-                                    hidden: { opacity: 0, y: 20 },
-                                    visible: { opacity: 1, y: 0 }
-                                }}
-                            >
-                                <ProductCard
-                                    product={product}
-                                    handleDelete={handleDelete}
-                                    handleLike={handleLike}
-                                />
-                            </motion.div>
+                {isLoading ? (
+                    Array.from({ length: 4 }).map((_, index) => (
+                        <div
+                            key={index}
+                            className="w-[300px] h-80 bg-gray-300 animate-pulse rounded-md"
+                        ></div>
+                    ))
+                ) : (
+                    products.length > 0
+                        ? (products.map(
+                            product => (
+                                <motion.div
+                                    key={product.id}
+                                    variants={{
+                                        hidden: { opacity: 0, y: 20 },
+                                        visible: { opacity: 1, y: 0 }
+                                    }}
+                                >
+                                    <ProductCard
+                                        product={product}
+                                        handleDelete={handleDelete}
+                                        handleLike={handleLike}
+                                    />
+                                </motion.div>
+                            )
+                        )) : (
+                            <p className="p-4 text-gray-500 font-bold">Aucun produit n'a été trouvé !</p>
                         )
-                    )) : (
-                        <p className="p-4 text-gray-500 font-bold">Aucun produit n'a été trouvé !</p>
-                    )
-                }
+                )}
             </motion.div>
             <button
                 onClick={toggleForm}
