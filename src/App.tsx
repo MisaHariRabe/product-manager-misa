@@ -1,14 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/home";
 import Product from "./pages/product";
-
-import SmartphonePremium from "./assets/images/xiaomi-15-ultra-test-2-scaled.webp"
-import LaptopUltrabook from "./assets/images/windowsultrabooks-2048px-3640.webp"
-import WirelessHeaphones from "./assets/images/bluetoothheadphones-2048px-6146.webp"
-import SmartWatch from "./assets/images/FkGweMeB7hdPgaSFQdgsfj-1200-80.jpg"
-import DigitalCamera from "./assets/images/retro-pink-compact-digital-camera-digicam-1.webp"
-import GamingConsole from "./assets/images/gamingconsoles-2048px-00651-3x2-1.webp"
 
 interface ProductProps {
   id: number;
@@ -18,44 +11,27 @@ interface ProductProps {
 }
 
 const App = () => {
-  const [products, setProducts] = useState<ProductProps[]>([
-    {
-      id: 1,
-      title: "Smartphone Premium",
-      image: SmartphonePremium,
-      isLiked: false,
-    },
-    {
-      id: 2,
-      title: "Laptop Ultrabook",
-      image: LaptopUltrabook,
-      isLiked: true,
-    },
-    {
-      id: 3,
-      title: "Wireless Headphones",
-      image: WirelessHeaphones,
-      isLiked: false,
-    },
-    {
-      id: 4,
-      title: "Smart Watch",
-      image: SmartWatch,
-      isLiked: false,
-    },
-    {
-      id: 5,
-      title: "Digital Camera",
-      image: DigitalCamera,
-      isLiked: true,
-    },
-    {
-      id: 6,
-      title: "Gaming Console",
-      image: GamingConsole,
-      isLiked: false,
+  const [products, setProducts] = useState<ProductProps[]>([]);
+
+  useEffect(() => {
+    const storedProducts = localStorage.getItem("products");
+    if (storedProducts) {
+      try {
+        const parsedProducts = JSON.parse(storedProducts);
+        if (Array.isArray(parsedProducts)) {
+          setProducts(parsedProducts);
+        }
+      } catch (error) {
+        console.error("Failed to parse products from localStorage:", error);
+      }
     }
-  ]);
+  }, []);
+
+  useEffect(() => {
+    if (products.length > 0) {
+      localStorage.setItem("products", JSON.stringify(products));
+    }
+  }, [products]);
 
   const handleDelete = (id: number) => {
     setProducts(products.filter(product => product.id !== id));
@@ -65,10 +41,14 @@ const App = () => {
     setProducts(products.map(p => p.id === id ? { ...p, isLiked: !p.isLiked } : p))
   };
 
+  const handleAdd = (newProduct: Omit<ProductProps, 'id' | 'isLiked'>) => {
+    setProducts([...products, { ...newProduct, id: products.length + 1, isLiked: false }]);
+  };
+
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home products={products} handleDelete={handleDelete} handleLike={handleLike} />} />
+        <Route path="/" element={<Home products={products} handleDelete={handleDelete} handleLike={handleLike} handleAdd={handleAdd} />} />
         <Route path="/product/:id" element={<Product products={products} handleDelete={handleDelete} handleLike={handleLike} />} />
       </Routes>
     </Router>

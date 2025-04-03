@@ -18,9 +18,9 @@ export const ProductCard = (
     return (
         <div
             key={product.id}
-            className="border border-gray-300 p-4 rounded-lg flex flex-row gap-4 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white"
+            className="border border-gray-300 p-4 rounded-lg flex flex-col gap-4 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white w-[300px]"
         >
-            <figure className="overflow-hidden w-[200px] h-[200px] rounded-lg">
+            <figure className="overflow-hidden w-full h-[200px] rounded-lg">
                 <img
                     src={product.image}
                     alt={product.title}
