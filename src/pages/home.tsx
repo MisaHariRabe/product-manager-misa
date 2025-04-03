@@ -2,6 +2,7 @@ import { ProductCard } from "../components/ProductCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 interface ProductProps {
     id: number
@@ -32,7 +33,13 @@ const Home = ({ products, handleDelete, handleLike, handleAdd }: { products: Pro
         <>
             <h1 className="md:text-3xl text-5xl font-extrabold text-gray-800 mb-5">Home</h1>
             {isFormVisible && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black z-50">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.3 }}
+                    className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-70 p-4 z-50"
+                >
                     <form
                         onSubmit={handleFormSubmit}
                         className="bg-white shadow-md rounded-md p-6 w-96"
@@ -70,36 +77,51 @@ const Home = ({ products, handleDelete, handleLike, handleAdd }: { products: Pro
                             <button
                                 type="button"
                                 onClick={toggleForm}
-                                className="p-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition"
+                                className="p-2 border border-gray-500 text-gray-500 rounded transition"
                             >
                                 Annuler
                             </button>
                             <button
                                 type="submit"
-                                className="p-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+                                className="p-2 bg-green-500 text-white rounded hover:bg-green-700 transition"
                             >
                                 Ajouter
                             </button>
                         </div>
                     </form>
-                </div>
+                </motion.div>
             )}
-            <div className="grid md:grid-flow-col grid-flow-row justify-center gap-4">
+            <motion.div
+                className="grid md:grid-flow-col grid-flow-row justify-center gap-4"
+                initial="hidden"
+                animate="visible"
+                variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.1 } }
+                }}
+            >
                 {products.length > 0
                     ? (products.map(
                         product => (
-                            <ProductCard
+                            <motion.div
                                 key={product.id}
-                                product={product}
-                                handleDelete={handleDelete}
-                                handleLike={handleLike}
-                            />
+                                variants={{
+                                    hidden: { opacity: 0, y: 20 },
+                                    visible: { opacity: 1, y: 0 }
+                                }}
+                            >
+                                <ProductCard
+                                    product={product}
+                                    handleDelete={handleDelete}
+                                    handleLike={handleLike}
+                                />
+                            </motion.div>
                         )
                     )) : (
                         <p className="p-4 text-gray-500 font-bold">Aucun produit n'a été trouvé !</p>
                     )
                 }
-            </div>
+            </motion.div>
             <button
                 onClick={toggleForm}
                 className="fixed bottom-8 right-8 flex items-center p-4 text-white rounded-full hover:cursor-pointer bg-blue-600 hover:bg-blue-700 transition z-50"

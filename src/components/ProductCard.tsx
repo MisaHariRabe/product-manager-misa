@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as faHeartOutline, faTrashCan } from "@fortawesome/free-regular-svg-icons";
-import { faHeart as faHeartFill } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as faHeartFill, faEye } from "@fortawesome/free-solid-svg-icons";
 
 interface ProductProps {
     id: number;
@@ -20,7 +20,7 @@ export const ProductCard = (
             key={product.id}
             className="border border-gray-300 p-4 rounded-lg flex flex-col gap-4 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white w-[300px]"
         >
-            <figure className="overflow-hidden w-full h-[200px] rounded-lg">
+            <figure className="overflow-hidden w-full h-[200px] rounded-md border border-gray-300">
                 <img
                     src={product.image}
                     alt={product.title}
@@ -41,14 +41,15 @@ export const ProductCard = (
                             color="red"
                             icon={faTrashCan}
                             onClick={() => handleDelete(product.id)}
-                            className="md:text-2xl text-3xl px-4 py-2 hover:cursor-pointer hover:scale-110 transition-transform duration-200"
+                            className="md:text-2xl text-3xl hover:cursor-pointer hover:scale-110 transition-transform duration-200"
                         />
                     </div>
                     <Link
                         to={"/product/" + product.id}
-                        className="block text-blue-500 hover:text-blue-700 transition-colors duration-200 p-2 border border-blue-500 rounded"
+                        className="block text-blue-500 hover:text-blue-700 transition-colors duration-200 p-2 border border-blue-500 rounded items-center"
                     >
-                        View Details
+                        <FontAwesomeIcon className="text-blue-500 mr-2" icon={faEye} />
+                        Afficher
                     </Link>
                 </div>
             </div>
