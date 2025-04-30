@@ -12,13 +12,16 @@ body {
     /* Police de style japonais */
     background-color: #f9f5f0;
     /* Fond crème doux */
+    background-image: url('../assets/images/fond-japonais.jpg');
+    background-size: cover;
+}
+
+.login-body {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    background-image: url('../assets/images/fond-japonais.jpg');
-    background-size: cover;
 }
 
 .App {

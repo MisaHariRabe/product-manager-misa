@@ -112,77 +112,79 @@ function LoginPage() {
     }
 
     return (
-        <motion.div
-            className="App"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-        >
-            <motion.h1
-                initial={{ y: -70 }}
-                animate={{ y: 0 }}
-                transition={{ duration: 0.9, delay: 0.4 }}
+        <div className="login-body">
+            <motion.div
+                className="App"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
             >
-                Signup Form
-            </motion.h1>
-            <motion.form
-                initial={{ y: -50 }}
-                animate={{ y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                onSubmit={handleSubmit}
-            >
-                {Object.keys(form).map((key) => (
-                    <motion.div
-                        key={key}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3, delay: 0.1 * Object.keys(form).indexOf(key) }}
-                    >
-                        <label htmlFor={key}>{key.charAt(0).toUpperCase() + key.slice(1)}</label>
-                        <br />
-                        <input
-                            type={key === 'password' || key === 'confirmPassword' ? 'password' : 'text'}
-                            id={key}
-                            name={key}
-                            value={form[key as keyof FormValues]}
-                            onChange={handleChange}
-                        />
-                        <AnimatePresence>
-                            {errors[key as keyof Errors] && (
-                                <motion.p
-                                    className="error"
-                                    initial={{ opacity: 0, y: -10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -10 }}
-                                    transition={{ duration: 0.2 }}
-                                >
-                                    {errors[key as keyof Errors]}
-                                </motion.p>
-                            )}
-                        </AnimatePresence>
-                        {key === 'password' && (
-                            <div className="password-strength">
-                                <motion.div
-                                    className="strength-bar"
-                                    initial={{ width: 0 }}
-                                    animate={{ width: `${(passwordStrength / 5) * 100}%` }}
-                                    transition={{ duration: 0.5 }}
-                                ></motion.div>
-                            </div>
-                        )}
-                    </motion.div>
-                ))}
-                <motion.button
-                    type="submit"
-                    disabled={!isFormValid()}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    transition={{ duration: 0.2 }}
+                <motion.h1
+                    initial={{ y: -70 }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 0.9, delay: 0.4 }}
                 >
-                    Submit
-                </motion.button>
-            </motion.form>
-        </motion.div>
+                    Signup Form
+                </motion.h1>
+                <motion.form
+                    initial={{ y: -50 }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    onSubmit={handleSubmit}
+                >
+                    {Object.keys(form).map((key) => (
+                        <motion.div
+                            key={key}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, delay: 0.1 * Object.keys(form).indexOf(key) }}
+                        >
+                            <label htmlFor={key}>{key.charAt(0).toUpperCase() + key.slice(1)}</label>
+                            <br />
+                            <input
+                                type={key === 'password' || key === 'confirmPassword' ? 'password' : 'text'}
+                                id={key}
+                                name={key}
+                                value={form[key as keyof FormValues]}
+                                onChange={handleChange}
+                            />
+                            <AnimatePresence>
+                                {errors[key as keyof Errors] && (
+                                    <motion.p
+                                        className="error"
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        transition={{ duration: 0.2 }}
+                                    >
+                                        {errors[key as keyof Errors]}
+                                    </motion.p>
+                                )}
+                            </AnimatePresence>
+                            {key === 'password' && (
+                                <div className="password-strength">
+                                    <motion.div
+                                        className="strength-bar"
+                                        initial={{ width: 0 }}
+                                        animate={{ width: `${(passwordStrength / 5) * 100}%` }}
+                                        transition={{ duration: 0.5 }}
+                                    ></motion.div>
+                                </div>
+                            )}
+                        </motion.div>
+                    ))}
+                    <motion.button
+                        type="submit"
+                        disabled={!isFormValid()}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        Submit
+                    </motion.button>
+                </motion.form>
+            </motion.div>
+        </div>
     );
 }
 
