@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/home";
 import Product from "./pages/product";
+import LoginPage from "./pages/login";
 
 interface ProductProps {
   id: number;
@@ -49,7 +50,8 @@ const App = () => {
     <div className="p-4 bg-gray-50 min-h-[100vh]">
       <Router>
         <Routes>
-          <Route path="/" element={<Home products={products} handleDelete={handleDelete} handleLike={handleLike} handleAdd={handleAdd} />} />
+          <Route path="/" element={<LoginPage />} index />
+          <Route path="/home" element={<Home products={products} handleDelete={handleDelete} handleLike={handleLike} handleAdd={handleAdd} />} />
           <Route path="/product/:id" element={<Product products={products} handleDelete={handleDelete} handleLike={handleLike} />} />
         </Routes>
       </Router>
