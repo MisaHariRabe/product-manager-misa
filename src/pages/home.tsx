@@ -14,7 +14,7 @@ interface ProductProps {
 const Home = ({ products, handleDelete, handleLike, handleAdd }: { products: ProductProps[], handleDelete: (id: number) => void, handleLike: (id: number) => void, handleAdd: (product: Omit<ProductProps, 'id' | 'isLiked'>) => void }) => {
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [formData, setFormData] = useState({ title: "", image: "" });
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const timer = setTimeout(() => setIsLoading(false), 1000);
@@ -35,28 +35,26 @@ const Home = ({ products, handleDelete, handleLike, handleAdd }: { products: Pro
         setIsFormVisible(false);
     };
 
-    if (products.length === 0) {
-        return (
-            <div className="p-4">
-                <div className="animate-pulse space-y-4">
-                    <div className="h-6 bg-gray-300 rounded"></div>
-                    <div className="h-6 bg-gray-300 rounded"></div>
-                    <div className="h-6 bg-gray-300 rounded"></div>
-                </div>
-            </div>
-        );
-    }
-
     return (
         <>
             <h1 className="md:text-3xl text-5xl font-extrabold text-gray-800 mb-5">Home</h1>
+            {(products.length === 0 || isLoading) && (
+                <div className="p-4">
+                    <div className="animate-pulse space-y-4">
+                        <div className="h-6 bg-gray-300 rounded"></div>
+                        <div className="h-6 bg-gray-300 rounded"></div>
+                        <div className="h-6 bg-gray-300 rounded"></div>
+                    </div>
+                </div>
+            )}
+
             {isFormVisible && (
                 <motion.div
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
                     transition={{ duration: 0.3 }}
-                    className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-70 p-4 z-50"
+                    className="fixed inset-0 flex items-center justify-center bg-black/60 p-4 z-50"
                 >
                     <form
                         onSubmit={handleFormSubmit}
