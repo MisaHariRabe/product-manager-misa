@@ -4,12 +4,12 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-interface ProductProps {
+type ProductProps = {
     id: number
     title: string
     image: string
     isLiked: boolean
-}
+};
 
 const Home = ({ products, handleDelete, handleLike, handleAdd }: { products: ProductProps[], handleDelete: (id: number) => void, handleLike: (id: number) => void, handleAdd: (product: Omit<ProductProps, 'id' | 'isLiked'>) => void }) => {
     const [isFormVisible, setIsFormVisible] = useState(false);

@@ -19,7 +19,7 @@ const Product = ({ products, handleDelete, handleLike }: { products: ProductProp
     return (
         <div className="p-4 bg-gray-50 min-h-screen">
             <Link
-                to={"/"}
+                to={"/home"}
                 className="block text-blue-500 hover:underline hover:text-blue-700 transition-colors duration-200 mb-4 font-medium"
             >
                 ← Go back home

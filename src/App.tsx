@@ -1,50 +1,11 @@
-import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/home";
 import Product from "./pages/product";
 import LoginPage from "./pages/login";
-
-interface ProductProps {
-  id: number;
-  title: string;
-  image: string;
-  isLiked: boolean;
-}
+import useMainHook from "./hooks/useMainHook";
 
 const App = () => {
-  const [products, setProducts] = useState<ProductProps[]>([]);
-
-  useEffect(() => {
-    const storedProducts = localStorage.getItem("products");
-    if (storedProducts) {
-      try {
-        const parsedProducts = JSON.parse(storedProducts);
-        if (Array.isArray(parsedProducts)) {
-          setProducts(parsedProducts);
-        }
-      } catch (error) {
-        console.error("Failed to parse products from localStorage:", error);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    if (products.length > 0) {
-      localStorage.setItem("products", JSON.stringify(products));
-    }
-  }, [products]);
-
-  const handleDelete = (id: number) => {
-    setProducts(products.filter(product => product.id !== id));
-  };
-
-  const handleLike = (id: number) => {
-    setProducts(products.map(p => p.id === id ? { ...p, isLiked: !p.isLiked } : p))
-  };
-
-  const handleAdd = (newProduct: Omit<ProductProps, 'id' | 'isLiked'>) => {
-    setProducts([...products, { ...newProduct, id: products.length + 1, isLiked: false }]);
-  };
+  const { products, handleDelete, handleLike, handleAdd } = useMainHook();
 
   return (
     <div className="p-4 bg-gray-50 min-h-[100vh]">
