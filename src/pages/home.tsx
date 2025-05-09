@@ -1,25 +1,28 @@
-import { ProductCard } from "../components/ProductCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import AddProductForm from "../components/AddProductForm";
+import { ProductProps } from "../types/ProductProps";
+import LoadingSkeleton from "../components/LoadingSkeleton";
+import ProductList from "../components/ProductList";
+import { SetStateAction } from "react";
 
-interface ProductProps {
-    id: number
-    title: string
-    image: string
-    isLiked: boolean
-}
-
-const Home = ({ products, handleDelete, handleLike, handleAdd }: { products: ProductProps[], handleDelete: (id: number) => void, handleLike: (id: number) => void, handleAdd: (product: Omit<ProductProps, 'id' | 'isLiked'>) => void }) => {
+const Home = ({ products, handleDelete, handleLike, handleAdd }: { products: ProductProps[], setProducts: React.Dispatch<SetStateAction<ProductProps[]>>, handleDelete: (id: number) => void, handleLike: (id: number) => void, handleAdd: (product: Omit<ProductProps, 'id' | 'isLiked'>) => void }) => {
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [formData, setFormData] = useState({ title: "", image: "" });
     const [isLoading, setIsLoading] = useState(false);
+    const [searchValue, setSearchValue] = useState("");
+    const [filteredProducts, setFilteredProducts] = useState<ProductProps[]>(products);
 
     useEffect(() => {
         const timer = setTimeout(() => setIsLoading(false), 1000);
         return () => clearTimeout(timer);
     }, []);
+
+    useEffect(() => {
+        setFilteredProducts(products);
+    }, [products]);
 
     const toggleForm = () => setIsFormVisible(!isFormVisible);
 
@@ -35,10 +38,25 @@ const Home = ({ products, handleDelete, handleLike, handleAdd }: { products: Pro
         setIsFormVisible(false);
     };
 
+    const handleSearch = () => {
+        const trimmedSearchValue = searchValue.trim().toLowerCase();
+
+        if (!trimmedSearchValue) {
+            setFilteredProducts(products);
+            return;
+        }
+
+        const filtered = products.filter(product =>
+            product.title.toLowerCase().includes(trimmedSearchValue)
+        );
+
+        setFilteredProducts(filtered);
+    };
+
     return (
         <>
             <h1 className="md:text-3xl text-5xl font-extrabold text-gray-800 mb-5">Home</h1>
-            {(products.length === 0 || isLoading) && (
+            {isLoading && filteredProducts.length === 0 && (
                 <div className="p-4">
                     <div className="animate-pulse space-y-4">
                         <div className="h-6 bg-gray-300 rounded"></div>
@@ -48,64 +66,17 @@ const Home = ({ products, handleDelete, handleLike, handleAdd }: { products: Pro
                 </div>
             )}
 
-            {isFormVisible && (
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.3 }}
-                    className="fixed inset-0 flex items-center justify-center bg-black/60 p-4 z-50"
-                >
-                    <form
-                        onSubmit={handleFormSubmit}
-                        className="bg-white shadow-md rounded-md p-6 w-96"
-                    >
-                        <h2 className="text-xl font-bold mb-4">Ajouter un produit</h2>
-                        <div className="mb-4">
-                            <label className="block text-gray-700 font-bold mb-2" htmlFor="title">
-                                Titre
-                            </label>
-                            <input
-                                type="text"
-                                id="title"
-                                name="title"
-                                value={formData.title}
-                                onChange={handleInputChange}
-                                className="w-full p-2 border rounded"
-                                required
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label className="block text-gray-700 font-bold mb-2" htmlFor="image">
-                                Lien de l'image
-                            </label>
-                            <input
-                                type="text"
-                                id="image"
-                                name="image"
-                                value={formData.image}
-                                onChange={handleInputChange}
-                                className="w-full p-2 border rounded"
-                                required
-                            />
-                        </div>
-                        <div className="flex justify-end gap-2">
-                            <button
-                                type="button"
-                                onClick={toggleForm}
-                                className="p-2 border border-gray-500 text-gray-500 rounded transition"
-                            >
-                                Annuler
-                            </button>
-                            <button
-                                type="submit"
-                                className="p-2 bg-green-500 text-white rounded hover:bg-green-700 transition"
-                            >
-                                Ajouter
-                            </button>
-                        </div>
-                    </form>
-                </motion.div>
+            {isFormVisible && (<AddProductForm formData={formData} handleFormSubmit={handleFormSubmit} handleInputChange={handleInputChange} toggleForm={toggleForm} />)}
+
+            {!isLoading && (
+                <div className="flex flex-row items-center gap-3">
+                    <input
+                        type="text"
+                        value={searchValue}
+                        onChange={(e) => setSearchValue(e.target.value)}
+                    />
+                    <button onClick={handleSearch}>Search</button>
+                </div>
             )}
             <motion.div
                 className="grid md:grid-flow-col grid-flow-row justify-center gap-4"
@@ -116,36 +87,11 @@ const Home = ({ products, handleDelete, handleLike, handleAdd }: { products: Pro
                     visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.1 } }
                 }}
             >
-                {isLoading ? (
-                    Array.from({ length: 4 }).map((_, index) => (
-                        <div
-                            key={index}
-                            className="w-[300px] h-80 bg-gray-300 animate-pulse rounded-md"
-                        ></div>
-                    ))
-                ) : (
-                    products.length > 0
-                        ? (products.map(
-                            product => (
-                                <motion.div
-                                    key={product.id}
-                                    variants={{
-                                        hidden: { opacity: 0, y: 20 },
-                                        visible: { opacity: 1, y: 0 }
-                                    }}
-                                >
-                                    <ProductCard
-                                        product={product}
-                                        handleDelete={handleDelete}
-                                        handleLike={handleLike}
-                                    />
-                                </motion.div>
-                            )
-                        )) : (
-                            <p className="p-4 text-gray-500 font-bold">Aucun produit n'a été trouvé !</p>
-                        )
+                {isLoading ? (<LoadingSkeleton />) : (
+                    <ProductList products={filteredProducts} handleLike={handleLike} handleDelete={handleDelete} />
                 )}
             </motion.div>
+
             <button
                 onClick={toggleForm}
                 className="fixed bottom-8 right-8 flex items-center p-4 text-white rounded-full hover:cursor-pointer bg-blue-600 hover:bg-blue-700 transition z-50"

@@ -42,7 +42,7 @@ const useMainHook = () => {
         setProducts([...products, { ...newProduct, id: products.length + 1, isLiked: false }]);
     };
 
-    return { products, handleDelete, handleLike, handleAdd };
+    return { products, setProducts, handleDelete, handleLike, handleAdd };
 }
 
 export default useMainHook;
